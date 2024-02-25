@@ -10,7 +10,10 @@ defmodule Gofetch.Application do
     children = [
       # Starts a worker by calling: Gofetch.Worker.start_link(arg)
       # {Gofetch.Worker, arg}
-      {Gofetch.Server, 8080}
+      %{
+        id: Gofetch.Server,
+        start: {Gofetch.Server, :start_link, [Gofetch.App, 8080]}
+      }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
