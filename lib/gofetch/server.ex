@@ -78,7 +78,7 @@ defmodule Gofetch.Server do
   end
 
   defp data_handler(client_socket, app, data) do
-    data_s = data |> to_string() |> String.trim()
+    data_s = data |> to_string()
     Logger.info("Request: #{data_s}")
     cond do
       data_s |> String.equivalent?("bye") ->
