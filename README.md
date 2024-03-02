@@ -1,21 +1,39 @@
 # Gofetch
 
-**TODO: Add description**
+A gopher protocol implementation in elixir
 
-## Installation
+This is a toy implementation of RFC 1436. Things are not finished but the gopher DSL takes shape and is somewhat usable:
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `gofetch` to your list of dependencies in `mix.exs`:
-
+## A sample app:
 ```elixir
-def deps do
-  [
-    {:gofetch, "~> 0.1.0"}
-  ]
+defmodule Gofetch.App do
+  use Gofetch.Dsl
+  alias Gofetch.Response, as: R
+  require Logger
+
+  r do
+    "/home" -> home()
+    "/home/about" -> about()
+  end
+
+  def root() do
+    [
+      R.info("Hello to my gopher"),
+      R.info("This is a test implementation of RFC 1436"),
+      R.stanza(:submenu, "Home", "/home")
+    ]
+  end
+
+  def home() do
+    R.stanza(:submenu, "About", "/home/about")
+  end
+
+  def about() do
+    [
+      R.info("About my home:"),
+      R.info("Some info about my home"),
+    ]
+  end
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/gofetch>.
 
