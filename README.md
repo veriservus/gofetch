@@ -15,7 +15,7 @@ defmodule Gofetch.App do
   alias Gofetch.Response, as: R
   require Logger
 
-  # See [Application](https://github.com/veriservus/gofetch/blob/master/lib/gofetch/application.ex)
+  # See https://github.com/veriservus/gofetch/blob/master/lib/gofetch/application.ex
   # to have an idea how to boot up app like this
 
   r do
