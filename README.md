@@ -44,3 +44,15 @@ defmodule Gofetch.App do
 end
 ```
 
+### boot up
+
+```bash
+mix -S iex
+```
+
+### browser with lynx
+
+```bash
+lynx gopher://localhost:8080
+```
+
