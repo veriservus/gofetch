@@ -4,12 +4,12 @@ defmodule Gofetch.Server do
 
   defstruct [
     :app,
-    :active_conns,
+    :conns,
   ]
 
   @type t :: %__MODULE__{
     app: module(),
-    active_conns: list(port)
+    conns: list(port)
   }
 
   def start_link(app_module, port) do
@@ -25,16 +25,16 @@ defmodule Gofetch.Server do
         Logger.error(inspect(errno))
     end
 
-    {:ok, %__MODULE__{app: app, active_conns: []}}
+    {:ok, %__MODULE__{app: app, conns: []}}
   end
 
   def handle_cast({:add_conn, client_socket}, state) do
     {:noreply,
-     %{state | active_conns: state.active_conns ++ [client_socket]}}
+     %{state | conns: state.conns ++ [client_socket]}}
   end
 
   def handle_cast({:remove_conn, client_socket}, state) do
-    {:noreply, %{state | active_conns: state.active_conns -- [client_socket]}}
+    {:noreply, %{state | conns: state.conns -- [client_socket]}}
   end
 
   defp do_listen(port) do
@@ -118,7 +118,7 @@ defmodule Gofetch.Server do
 
   def show_conns_info() do
     :sys.get_state(__MODULE__)
-    |> Map.get(:active_conns)
+    |> Map.get(:conns)
     |> Enum.map(fn port -> :inet.peername(port) |> elem(1) end)
   end
 
@@ -129,7 +129,7 @@ defmodule Gofetch.Server do
 
   def close_conns() do
     :sys.get_state(__MODULE__)
-    |> Map.get(:active_conns)
+    |> Map.get(:conns)
     |> Enum.each(fn conn -> do_close(conn) end)
   end
 
